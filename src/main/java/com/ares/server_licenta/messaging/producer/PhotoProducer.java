@@ -23,7 +23,7 @@ public class PhotoProducer {
         LOGGER.info("Sending message to RabbitMQ");
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE,
-                RabbitMQConfig.ROUTING_KEY,
+                "",
                 message
         );
     }

@@ -1,23 +1,24 @@
 package com.ares.server_licenta.config;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.GsonMessageConverter;
-import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String SCENE_QUEUE = "scene_queue";
+    // Exchange used to broadcast photos
     public static final String EXCHANGE = "photo_exchange";
-    public static final String ROUTING_KEY = "photo.routingKey";
+
+    // Response queue (Python → Java)
+    public static final String SCENE_LABELS_QUEUE = "scene_response_queue";
 
     @Bean
     public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
@@ -27,21 +28,13 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue sceneQueue() {
-        return new Queue(SCENE_QUEUE);
+    public FanoutExchange exchange() {
+        return new FanoutExchange(EXCHANGE, true, false);
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(EXCHANGE);
-    }
-
-    @Bean
-    public Binding binding(Queue sceneQueue, DirectExchange exchange) {
-        return BindingBuilder
-                .bind(sceneQueue)
-                .to(exchange)
-                .with(ROUTING_KEY);
+    public Queue sceneLabelsQueue() {
+        return new Queue(SCENE_LABELS_QUEUE, true);
     }
 
     @Bean
@@ -53,5 +46,4 @@ public class RabbitMQConfig {
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-
 }
