@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class PhotoMessage{
 
+
     private String fileName;
     private byte[] data;
 
