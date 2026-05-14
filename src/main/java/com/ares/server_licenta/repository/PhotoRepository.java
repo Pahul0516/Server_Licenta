@@ -31,4 +31,10 @@ public interface PhotoRepository extends JpaRepository<Photo, UUID> {
     Photo findFileName(
             @Param("fileName") String fileName
     );
+
+    List<Photo> findByUserIdAndCreatedAtBetweenOrderByCreatedAtAsc(
+            UUID userId,
+            OffsetDateTime startOfDay,
+            OffsetDateTime endOfDay
+    );
 }
