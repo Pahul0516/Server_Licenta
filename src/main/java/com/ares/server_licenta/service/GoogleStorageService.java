@@ -1,7 +1,6 @@
 package com.ares.server_licenta.service;
 
 import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ public class GoogleStorageService {
     }
 
     public byte[] downloadFile(String fileName) {
-        // Fetch the file from your bucket
         Blob blob = storage.get(bucketName, fileName);
         if (blob == null) {
             throw new RuntimeException("File not found in GCS: " + fileName);
