@@ -4,6 +4,7 @@ import com.ares.server_licenta.domain.Photo;
 import com.ares.server_licenta.messaging.dto.PhotoMessage;
 import com.ares.server_licenta.messaging.producer.PhotoProducer;
 import com.ares.server_licenta.repository.PhotoRepository;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class PhotoService {
         this.storageService = storageService;
     }
 
+    @Async
     public void processPhotos(UUID userId) {
         OffsetDateTime start = LocalDate.now().atStartOfDay(ZoneOffset.UTC).toOffsetDateTime();
         OffsetDateTime end = LocalDate.now().atTime(LocalTime.MAX).atOffset(ZoneOffset.UTC);

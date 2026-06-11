@@ -34,12 +34,15 @@ public class PhotoController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "Upload a photo")
+    @Operation(
+            summary = "Label all photos",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
     @PostMapping(value = "/lablePhotos")
-    public ResponseEntity<String> uploadPhoto() {
-        // Keeps the hardcoded UUID as requested for now
-        photoService.processPhotos(UUID.fromString("750838d8-f761-46b9-a564-f58a5c687a2e"));
-        return ResponseEntity.ok("Ceva");
+    public ResponseEntity<String> uploadPhoto(@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
+        UUID userId = userService.getUserIdFromToken(token);
+        photoService.processPhotos(userId);
+        return ResponseEntity.accepted().body("Photo labeling started");
     }
 
     @Operation(
