@@ -19,7 +19,6 @@ public class GptService {
     }
 
     public String generateNarrative(String timelineJson) {
-        // 1. Define the "Rules" for GPT (System Prompt)
         String systemInstructions = """
     You are an empathetic Memory Recovery Assistant. I will provide a JSON timeline 
     of detected locations, people, and objects from a user's day. 
@@ -44,10 +43,8 @@ public class GptService {
 
         Message systemMessage = new SystemPromptTemplate(systemInstructions).createMessage();
 
-        // 2. Provide the Data (User Message)
         Message userMessage = new UserMessage("Here is the timeline data: " + timelineJson);
 
-        // 3. Call the Model
         return chatModel.call(new Prompt(List.of(systemMessage, userMessage)))
                 .getResult()
                 .getOutput()

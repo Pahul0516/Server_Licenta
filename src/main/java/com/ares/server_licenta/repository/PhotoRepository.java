@@ -17,9 +17,9 @@ public interface PhotoRepository extends JpaRepository<Photo, UUID> {
             "AND p.created_at >= :startOfDay " +
             "AND p.created_at <= :endOfDay " +
             "AND (" +
-            "  p.coco_label IS NULL OR jsonb_array_length(p.coco_label) = 0 " + // JSONB check
-            "  OR p.scene_label IS NULL OR trim(p.scene_label) = '' " +         // TEXT check
-            "  OR p.person_label IS NULL OR trim(p.person_label) = ''" +        // TEXT check
+            "  p.coco_label IS NULL OR jsonb_array_length(p.coco_label) = 0 " +
+            "  OR p.scene_label IS NULL OR trim(p.scene_label) = '' " +
+            "  OR p.person_label IS NULL OR trim(p.person_label) = ''" +
             ")", nativeQuery = true)
     List<Photo> findByUserIdAndCurrentDayAndMissingLabels(
             @Param("userId") UUID userId,

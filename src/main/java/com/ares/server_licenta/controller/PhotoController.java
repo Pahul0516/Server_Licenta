@@ -6,7 +6,7 @@ import com.ares.server_licenta.service.StoryService;
 import com.ares.server_licenta.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement; // Add this import
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +47,7 @@ public class PhotoController {
 
     @Operation(
             summary = "Get the aggregated timeline JSON for GPT",
-            security = @SecurityRequirement(name = "bearerAuth") // Locks only this endpoint
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping(value = "/story")
     public ResponseEntity<String> getStoryJson(@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
@@ -58,7 +58,7 @@ public class PhotoController {
 
     @Operation(
             summary = "Get the day narrative text from GPT",
-            security = @SecurityRequirement(name = "bearerAuth") // Locks only this endpoint
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @GetMapping(value = "/story/narrative", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getDayNarrative(@Parameter(hidden = true) @RequestHeader("Authorization") String token) {

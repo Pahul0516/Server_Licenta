@@ -14,10 +14,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    // Exchange used to broadcast photos
     public static final String EXCHANGE = "photo_exchange";
 
-    // Response queue (Python → Java)
     public static final String SCENE_LABELS_QUEUE = "scene_response_queue";
 
     @Bean

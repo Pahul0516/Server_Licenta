@@ -22,7 +22,6 @@ import org.json.JSONObject;
 @Service
 public class UserService {
 
-    // Your exact Supabase URL matching the "iss" claim in your token
     private final String supabaseUrl = "https://dqxlpviizbfilkinbsda.supabase.co";
 
     public UUID getUserIdFromToken(String bearerToken) {
@@ -33,14 +32,11 @@ public class UserService {
         String token = bearerToken.replace("Bearer ", "").trim();
 
         try {
-            // 1. Decode the token to inspect the Key ID (kid)
             DecodedJWT jwt = JWT.decode(token);
             String kid = jwt.getKeyId();
 
-            // 2. Fetch the public key properties (x, y coordinates) from Supabase's JWKS endpoint
             ECPublicKey publicKey = fetchECPublicKeyFromJwks(kid);
 
-            // 3. Initialize the verifier explicitly for ECDSA P-256 (ES256)
             Algorithm algorithm = Algorithm.ECDSA256(publicKey, null);
 
             JWTVerifier verifier = JWT.require(algorithm)
@@ -48,10 +44,8 @@ public class UserService {
                     .withAudience("authenticated")
                     .build();
 
-            // 4. Verify signature and timestamps cryptographically
             DecodedJWT verifiedJwt = verifier.verify(token);
 
-            // 5. Return the true user UUID
             return UUID.fromString(verifiedJwt.getSubject());
 
         } catch (Exception e) {
